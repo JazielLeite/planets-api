@@ -1,0 +1,8 @@
+/Users/jaziel/eclipse-workspace/planets-api/src/main/java/com/jz/api/planet/PlanetsApiApplication.java
+/Users/jaziel/eclipse-workspace/planets-api/src/main/java/com/jz/api/planet/model/Planet.java
+/Users/jaziel/eclipse-workspace/planets-api/src/main/java/com/jz/api/planet/ServletInitializer.java
+/Users/jaziel/eclipse-workspace/planets-api/src/main/java/com/jz/api/planet/service/PlanetService.java
+/Users/jaziel/eclipse-workspace/planets-api/src/main/java/com/jz/api/planet/service/PlanetServiceImpl.java
+/Users/jaziel/eclipse-workspace/planets-api/src/main/java/com/jz/api/planet/controller/PlanetController.java
+/Users/jaziel/eclipse-workspace/planets-api/src/main/java/com/jz/api/planet/repository/PlanetRepository.java
+/Users/jaziel/eclipse-workspace/planets-api/src/main/java/com/jz/api/planet/service/PlanetExtraDataService.java
