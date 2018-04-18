@@ -4,7 +4,7 @@ Olá, Jaziel!
 
 Dando continuidade ao nosso processo, temos um desafio para te propor! o/
 
-Sabendo que os nossos associados são aficionados por Star Wars, a B2W gostaria de criar um jogo com algumas informações da franquia.
+Sabendo que os nossos associados são aficionados por Star Wars, gostaríamos de criar um jogo com algumas informações da franquia.
  
 Para possibilitar a equipe de front criar essa aplicação, queremos desenvolver uma API que contenha os dados dos planetas. 
 Requisitos:
@@ -23,6 +23,7 @@ Funcionalidades desejadas:
 - Buscar por nome
 - Buscar por ID
 - Remover planeta
+
 Linguagens que usamos: Java, Go, Clojure, Node, Python
 Bancos que usamos: MongoDB, Cassandra, DynamoDB, Datomic
 
