@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jz.api.planet.model.Planet;
 import com.jz.api.planet.service.PlanetService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/api/v1/planets")
+@Api(produces=MediaType.APPLICATION_JSON_UTF8_VALUE, value="PlanetControllerAPI")
 public class PlanetController {
 	
 	@Autowired
@@ -32,6 +39,10 @@ public class PlanetController {
 	 *         success.
 	 */
 	@GetMapping(produces = "application/json; charset=UTF-8")
+	@ApiOperation(value="Retrieve a list of planets.")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="List of planets retrieved.", response=Planet.class, responseContainer="List"),
+	})
 	public ResponseEntity<List<Planet>> getAll() {
 		return ResponseEntity.ok(service.getAll());
 	}
@@ -44,6 +55,11 @@ public class PlanetController {
 	 * 		   If no {@link Planet} was found it gives out a HTTP 400 response
 	 */
 	@GetMapping(path = "/{id}", produces = "application/json; charset=UTF-8")
+	@ApiOperation(value="Search Planets by Id.")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="Planet data.", response=Planet.class),
+			@ApiResponse(code=404, message="Planet not found.")
+	})
 	public ResponseEntity<Planet> findById(@PathVariable("id") String planetId) {
 		
 	    return Optional.ofNullable(service.findById(planetId))
@@ -59,6 +75,11 @@ public class PlanetController {
 	 * 		   If no {@link Planet} was found it gives out a HTTP 400 response
 	 */
 	@GetMapping(path = "/find/{name}", produces = "application/json; charset=UTF-8")
+	@ApiOperation(value="Search a List of Planets that attend of requested name")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="List of Planets.", response=Planet.class),
+			@ApiResponse(code=404, message="Planet not found.")
+	})
 	public ResponseEntity<List<Planet>> findByName(@PathVariable("name") String planetName) {
 	    return Optional.ofNullable(service.findByName(planetName))
 	            	   .map(listPanets -> ResponseEntity.ok(listPanets) ) // ok 
@@ -72,6 +93,12 @@ public class PlanetController {
 	 * @return the persisted {@link Planet}.
 	 */
 	@PostMapping(produces = "application/json; charset=UTF-8")
+	@ApiOperation(value="Save a Planet")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="Saved Planet data.", response=Planet.class),
+			@ApiResponse(code=404, message="Planet not found."),
+			@ApiResponse(code=400, message="Invalid Planet data")
+	})
 	public ResponseEntity<Planet> save(@RequestBody @Valid Planet planet) {
 		try {
 			service.save(planet);
@@ -88,6 +115,12 @@ public class PlanetController {
 	 * @return the persisted {@link Planet}.
 	 */
 	@PostMapping(path = "/{id}", produces = "application/json; charset=UTF-8")
+	@ApiOperation(value="Update a Planet")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="Updated Planet data.", response=Planet.class),
+			@ApiResponse(code=404, message="Planet not found."),
+			@ApiResponse(code=400, message="Invalid Planet data")
+	})
 	public ResponseEntity<Planet> update(@PathVariable("id") String planetId, @RequestBody @Valid Planet planet) {
 		planet.setId(planetId);
 		try {
@@ -106,6 +139,8 @@ public class PlanetController {
 	 * @return the {@link Planet#getId()} of the deleted {@link Planet}
 	 */
 	@DeleteMapping("/{id}")
+	@ApiOperation(value="Delete a Planet")	
+	@ApiResponse(code=200, message="Deleted Planet Id.", response=Planet.class)
 	public ResponseEntity<String> delete(@PathVariable("id") String planetId) {
 		service.delete(planetId);
 		return ResponseEntity.ok(planetId);
@@ -118,12 +153,17 @@ public class PlanetController {
 	 * @return the persisted {@link Planet}.
 	 */
 	@PatchMapping("/{id}")
+	@ApiOperation(value="Update a part of Planet")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="Updated Planet data.", response=Planet.class),
+			@ApiResponse(code=404, message="Planet not found.")
+	})
 	public ResponseEntity<String> partUpdate(@PathVariable("id") String planetId, @RequestBody Planet planet) {
 		try {	
 			service.fill(planet, planetId);
 			service.save(planet);
 		} catch (IllegalArgumentException e) {
-			return ResponseEntity.badRequest().body(planet.getId());
+			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(planet.getId());
 	}
